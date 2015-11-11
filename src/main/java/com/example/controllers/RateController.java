@@ -1,7 +1,10 @@
-package com.example.api;
+package com.example.controllers;
 
+import com.example.api.ApiVersion;
 import com.example.core.Rate;
 import com.example.db.RateDAO;
+import com.example.exceptions.FormattedErrorResponse;
+import com.example.exceptions.FormattedErrorResponseProvider;
 import com.example.soap.SOAPClient;
 import com.example.soap.SOAPMessageParser;
 import com.example.soap.SOAPMessageProvider;
@@ -13,12 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.xml.soap.SOAPMessage;
 import java.time.LocalDate;
@@ -30,8 +29,10 @@ import java.util.Optional;
  */
 @RestController
 @Validated
-@RequestMapping("/api/rate")
+@RequestMapping("/rate")
 public class RateController {
+    @Autowired
+    private FormattedErrorResponseProvider formattedErrorResponseProvider;
 
     @Autowired
     private RateDAO rateDAO;
@@ -46,11 +47,14 @@ public class RateController {
     private SOAPMessageProvider soapMessageProvider;
 
     @RequestMapping(value = "/{code}", method = RequestMethod.GET)
+    @ApiVersion(versions = {"1"}, latest = true)
     public ResponseEntity<?> getRate(@CodeConstraint @PathVariable("code") String code) {
+        int i = 1 / 0;
         return getRate(code, LocalDate.now().format(DateTimeFormatter.ISO_DATE));
     }
 
     @RequestMapping(value = "/{code}/{date}", method = RequestMethod.GET)
+    @ApiVersion(versions = {"1"}, latest = true)
     public ResponseEntity<?> getRate(@CodeConstraint @PathVariable("code") String code,
                                      @DateConstraint @PathVariable("date") String date) {
 
@@ -82,20 +86,16 @@ public class RateController {
         optional = rateDAO.get(code, date);
 
         if (optional.isPresent())
-            return new ResponseEntity<Rate>(optional.get(), HttpStatus.OK);
+            return new ResponseEntity<>(optional.get(), HttpStatus.OK);
         else
             return new ResponseEntity<>("Not found", HttpStatus.NOT_FOUND);
     }
 
+    @ResponseBody
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
-    public ModelAndView handleError(HttpServletRequest req, ConstraintViolationException exception) {
-        ModelAndView mav = new ModelAndView(new MappingJackson2JsonView());
-        for (ConstraintViolation violation : exception.getConstraintViolations()) {
-            mav.addObject("message", violation.getMessage());
-        }
-        mav.addObject("url", req.getRequestURL());
-        return mav;
+    public FormattedErrorResponse handleError(ConstraintViolationException exception) {
+        return formattedErrorResponseProvider.getFormattedError(exception);
     }
 }
 
