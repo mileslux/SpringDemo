@@ -22,6 +22,7 @@ public class CodeConstraintValidator implements ConstraintValidator<CodeConstrai
                     .addConstraintViolation();
             return false;
         }
+
         return true;
     }
 }

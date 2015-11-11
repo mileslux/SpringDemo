@@ -22,6 +22,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.xml.soap.SOAPMessage;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 /**
@@ -46,7 +47,7 @@ public class RateController {
 
     @RequestMapping(value = "/{code}", method = RequestMethod.GET)
     public ResponseEntity<?> getRate(@CodeConstraint @PathVariable("code") String code) {
-        return getRate(code, LocalDate.now().toString());
+        return getRate(code, LocalDate.now().format(DateTimeFormatter.ISO_DATE));
     }
 
     @RequestMapping(value = "/{code}/{date}", method = RequestMethod.GET)

@@ -8,16 +8,22 @@
 
 package com.example.soap.response;
 
-import javax.xml.bind.annotation.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType&gt;
  *   &lt;complexContent&gt;
@@ -29,9 +35,9 @@ import java.util.List;
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *                 &lt;sequence&gt;
  *                   &lt;element name="Vname" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *                   &lt;element name="Vnom" type="{http://www.w3.org/2001/XMLSchema}short"/&gt;
- *                   &lt;element name="Vcurs" type="{http://www.w3.org/2001/XMLSchema}float"/&gt;
- *                   &lt;element name="Vcode" type="{http://www.w3.org/2001/XMLSchema}short"/&gt;
+ *                   &lt;element name="Vnom" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *                   &lt;element name="Vcurs" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+ *                   &lt;element name="Vcode" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *                   &lt;element name="VchCode" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *                 &lt;/sequence&gt;
  *               &lt;/restriction&gt;
@@ -44,18 +50,18 @@ import java.util.List;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "valuteCursOnDate"
+        "valuteCursOnDate"
 })
 @XmlRootElement(name = "ValuteData")
 public class GetCursOnDateXMLData {
 
     @XmlElement(name = "ValuteCursOnDate")
-    protected List<ValuteCursOnDate> valuteCursOnDate;
+    protected List<GetCursOnDateXMLData.ValuteCursOnDate> valuteCursOnDate;
     @XmlAttribute(name = "OnDate")
     protected Integer onDate;
 
@@ -81,20 +87,20 @@ public class GetCursOnDateXMLData {
      *
      *
      */
-    public List<ValuteCursOnDate> getValuteCursOnDate() {
+    public List<GetCursOnDateXMLData.ValuteCursOnDate> getValuteCursOnDate() {
         if (valuteCursOnDate == null) {
-            valuteCursOnDate = new ArrayList<ValuteCursOnDate>();
+            valuteCursOnDate = new ArrayList<GetCursOnDateXMLData.ValuteCursOnDate>();
         }
         return this.valuteCursOnDate;
     }
 
     /**
      * Gets the value of the onDate property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link Integer }
-     *     
+     *
      */
     public Integer getOnDate() {
         return onDate;
@@ -102,11 +108,11 @@ public class GetCursOnDateXMLData {
 
     /**
      * Sets the value of the onDate property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link Integer }
-     *     
+     *
      */
     public void setOnDate(Integer value) {
         this.onDate = value;
@@ -115,55 +121,55 @@ public class GetCursOnDateXMLData {
 
     /**
      * <p>Java class for anonymous complex type.
-     * 
+     *
      * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType&gt;
      *   &lt;complexContent&gt;
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
      *       &lt;sequence&gt;
      *         &lt;element name="Vname" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
-     *         &lt;element name="Vnom" type="{http://www.w3.org/2001/XMLSchema}short"/&gt;
-     *         &lt;element name="Vcurs" type="{http://www.w3.org/2001/XMLSchema}float"/&gt;
-     *         &lt;element name="Vcode" type="{http://www.w3.org/2001/XMLSchema}short"/&gt;
+     *         &lt;element name="Vnom" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+     *         &lt;element name="Vcurs" type="{http://www.w3.org/2001/XMLSchema}decimal"/&gt;
+     *         &lt;element name="Vcode" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
      *         &lt;element name="VchCode" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
      *       &lt;/sequence&gt;
      *     &lt;/restriction&gt;
      *   &lt;/complexContent&gt;
      * &lt;/complexType&gt;
      * </pre>
-     * 
-     * 
+     *
+     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
-        "vname",
-        "vnom",
-        "vcurs",
-        "vcode",
-        "vchCode"
+            "vname",
+            "vnom",
+            "vcurs",
+            "vcode",
+            "vchCode"
     })
     public static class ValuteCursOnDate {
 
         @XmlElement(name = "Vname", required = true)
         protected String vname;
         @XmlElement(name = "Vnom")
-        protected short vnom;
-        @XmlElement(name = "Vcurs")
-        protected float vcurs;
+        protected int vnom;
+        @XmlElement(name = "Vcurs", required = true)
+        protected BigDecimal vcurs;
         @XmlElement(name = "Vcode")
-        protected short vcode;
+        protected int vcode;
         @XmlElement(name = "VchCode", required = true)
         protected String vchCode;
 
         /**
          * Gets the value of the vname property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getVname() {
             return vname;
@@ -171,11 +177,11 @@ public class GetCursOnDateXMLData {
 
         /**
          * Sets the value of the vname property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setVname(String value) {
             this.vname = value;
@@ -183,59 +189,67 @@ public class GetCursOnDateXMLData {
 
         /**
          * Gets the value of the vnom property.
-         * 
+         *
          */
-        public short getVnom() {
+        public int getVnom() {
             return vnom;
         }
 
         /**
          * Sets the value of the vnom property.
-         * 
+         *
          */
-        public void setVnom(short value) {
+        public void setVnom(int value) {
             this.vnom = value;
         }
 
         /**
          * Gets the value of the vcurs property.
-         * 
+         *
+         * @return
+         *     possible object is
+         *     {@link BigDecimal }
+         *
          */
-        public float getVcurs() {
+        public BigDecimal getVcurs() {
             return vcurs;
         }
 
         /**
          * Sets the value of the vcurs property.
-         * 
+         *
+         * @param value
+         *     allowed object is
+         *     {@link BigDecimal }
+         *
          */
-        public void setVcurs(float value) {
+        public void setVcurs(BigDecimal value) {
             this.vcurs = value;
         }
 
         /**
          * Gets the value of the vcode property.
-         * 
+         *
          */
-        public short getVcode() {
+        public int getVcode() {
             return vcode;
         }
 
         /**
          * Sets the value of the vcode property.
-         * 
+         *
          */
-        public void setVcode(short value) {
+        public void setVcode(int value) {
             this.vcode = value;
         }
 
         /**
          * Gets the value of the vchCode property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getVchCode() {
             return vchCode;
@@ -243,11 +257,11 @@ public class GetCursOnDateXMLData {
 
         /**
          * Sets the value of the vchCode property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setVchCode(String value) {
             this.vchCode = value;
@@ -256,3 +270,4 @@ public class GetCursOnDateXMLData {
     }
 
 }
+

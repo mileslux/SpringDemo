@@ -30,7 +30,7 @@ public class DemoConfiguration {
 
     @Bean
     public SOAPClient soapClient() {
-        return new MySOAPClient("http://www.cbr.ru/DailyInfoWebServ/DailyInfo.asmx", 10000, 10000);
+        return new MySOAPClient();
     }
 
     @Bean

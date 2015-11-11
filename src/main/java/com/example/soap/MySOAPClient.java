@@ -1,5 +1,7 @@
 package com.example.soap;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.xml.soap.SOAPConnection;
 import javax.xml.soap.SOAPConnectionFactory;
 import javax.xml.soap.SOAPException;
@@ -13,19 +15,17 @@ import java.net.URLStreamHandler;
 /**
  * Created by mileslux on 11/7/2015.
  */
+
 public class MySOAPClient implements SOAPClient{
-    private final String destination;
-    private final int connectTimeout;
-    private final int readTimeout;
+    @Value("${soapclient.url}")
+    private String url;
+    @Value("${soapclient.connecttimeout}")
+    private int connectTimeout;
+    @Value("${soapclient.readtimeout}")
+    private int readTimeout;
 
-    public MySOAPClient(String destination, int connectTimeout, int readTimeout) {
-        this.destination = destination;
-        this.connectTimeout = connectTimeout;
-        this.readTimeout = readTimeout;
-    }
-
-    public String getDestination() {
-        return destination;
+    public String getUrl() {
+        return url;
     }
 
     public int getConnectTimeout() {
@@ -41,7 +41,7 @@ public class MySOAPClient implements SOAPClient{
         SOAPConnection connection = SOAPConnectionFactory.newInstance().createConnection();
         URL endpoint =
                 new URL(null,
-                        this.destination,
+                        this.url,
                         new URLStreamHandler() {
                             @Override
                             protected URLConnection openConnection(URL url) throws IOException {

@@ -1,6 +1,7 @@
 package com.example.core;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 /**
  * Created by mileslux on 11/6/2015.
@@ -9,7 +10,7 @@ public class Rate {
     @NotNull
     private String code;
     @NotNull
-    private Float rate;
+    private BigDecimal rate;
     @NotNull
     private String date;
 
@@ -21,11 +22,11 @@ public class Rate {
         this.code = code;
     }
 
-    public Float getRate() {
+    public BigDecimal getRate() {
         return rate;
     }
 
-    public void setRate(Float rate) {
+    public void setRate(BigDecimal rate) {
         this.rate = rate;
     }
 
