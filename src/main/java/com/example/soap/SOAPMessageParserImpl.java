@@ -14,7 +14,7 @@ import java.util.*;
 /**
  * Created by mileslux on 11/8/2015.
  */
-public class MySOAPMessageParser implements SOAPMessageParser {
+public class SOAPMessageParserImpl implements SOAPMessageParser {
     @Override
     public Collection<EnumValutesXMLData.EnumValutes> parseEnumValutesXML(SOAPMessage soapMessage) throws Exception {
         return new ResponseTraverse<EnumValutesXMLData.EnumValutes>() {

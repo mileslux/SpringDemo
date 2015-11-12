@@ -1,7 +1,12 @@
-package com.example.core;
+package com.example.domain;
+
+import com.example.utils.BigDecimalQuotedJsonSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  * Created by mileslux on 11/6/2015.
@@ -10,9 +15,11 @@ public class Rate {
     @NotNull
     private String code;
     @NotNull
+    @JsonSerialize(using = BigDecimalQuotedJsonSerializer.class)
     private BigDecimal rate;
     @NotNull
-    private String date;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
+    private LocalDate date;
 
     public String getCode() {
         return code;
@@ -30,11 +37,11 @@ public class Rate {
         this.rate = rate;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

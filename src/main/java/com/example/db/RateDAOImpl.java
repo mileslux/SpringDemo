@@ -1,18 +1,19 @@
 package com.example.db;
 
-import com.example.core.Rate;
+import com.example.domain.Rate;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Optional;
 
 /**
  * Created by mileslux on 11/8/2015.
  */
-public class RateTable implements RateDAO {
+public class RateDAOImpl implements RateDAO {
 
-    private final Table<String, String, Rate> table = HashBasedTable.create();
+    private final Table<String, LocalDate, Rate> table = HashBasedTable.create();
 
     @Override
     public void update(@NotNull Rate rate) {
@@ -20,12 +21,12 @@ public class RateTable implements RateDAO {
     }
 
     @Override
-    public Optional<Rate> get(@NotNull String code, @NotNull String date) {
+    public Optional<Rate> get(@NotNull String code, @NotNull LocalDate date) {
         return Optional.ofNullable(table.get(code, date));
     }
 
     @Override
-    public Boolean containsDate(@NotNull String date) {
+    public Boolean containsDate(@NotNull LocalDate date) {
         return table.containsRow(date);
     }
 }

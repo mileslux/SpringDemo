@@ -2,12 +2,15 @@ package com.example;
 
 import com.example.api.ApiVersionRequestHandlerMapping;
 import com.example.db.RateDAO;
-import com.example.db.RateTable;
-import com.example.exceptions.FormattedErrorResponseProvider;
-import com.example.exceptions.FormattedErrorResponseProviderImpl;
+import com.example.db.RateDAOImpl;
+import com.example.exception.FormattedErrorResponseProvider;
+import com.example.exception.FormattedErrorResponseProviderImpl;
+import com.example.service.RateService;
+import com.example.service.RateServiceImpl;
 import com.example.soap.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -17,26 +20,32 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  */
 @Configuration
 @EnableWebMvc
+@Profile("production")
 public class DemoConfiguration {
 
     @Bean
     public RateDAO rateDAO() {
-        return new RateTable();
+        return new RateDAOImpl();
+    }
+
+    @Bean
+    public RateService rateService() {
+        return new RateServiceImpl();
     }
 
     @Bean
     public SOAPMessageParser soapMessageParser() {
-        return new MySOAPMessageParser();
+        return new SOAPMessageParserImpl();
     }
 
     @Bean
     public SOAPMessageProvider soapMessageProvider() {
-        return new MySOAPMessageProvider();
+        return new SOAPMessageProviderImpl();
     }
 
     @Bean
     public SOAPClient soapClient() {
-        return new MySOAPClient();
+        return new SOAPClientImpl();
     }
 
     @Bean

@@ -2,19 +2,20 @@ package com.example.soap;
 
 import javax.xml.soap.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Created by mileslux on 11/7/2015.
  */
-public class MySOAPMessageProvider implements SOAPMessageProvider {
+public class SOAPMessageProviderImpl implements SOAPMessageProvider {
     @Override
-    public SOAPMessage createGetCursOnDateXML(String date) throws SOAPException {
+    public SOAPMessage createGetCursOnDateXML(LocalDate date) throws SOAPException {
         SOAPMessage soapMessage = createBaseMessage();
         SOAPBody body = soapMessage.getSOAPPart().getEnvelope().getBody();
 
         SOAPElement soapBodyElem0 = body.addChildElement("GetCursOnDateXML", "", "http://web.cbr.ru/");
         SOAPElement soapBodyElem1 = soapBodyElem0.addChildElement("On_date");
-        soapBodyElem1.addTextNode(date);
+        soapBodyElem1.addTextNode(date.format(DateTimeFormatter.ISO_DATE));
 
         return soapMessage;
     }

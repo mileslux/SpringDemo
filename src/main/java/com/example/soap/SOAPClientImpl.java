@@ -16,7 +16,7 @@ import java.net.URLStreamHandler;
  * Created by mileslux on 11/7/2015.
  */
 
-public class MySOAPClient implements SOAPClient{
+public class SOAPClientImpl implements SOAPClient{
     @Value("${soapclient.url}")
     private String url;
     @Value("${soapclient.connecttimeout}")

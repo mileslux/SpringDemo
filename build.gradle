@@ -33,6 +33,7 @@ repositories {
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile group: 'com.google.guava', name: 'guava', version: '18.0'
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.3")
     testCompile('org.testng:testng:6.9.4')
     testCompile('org.springframework.boot:spring-boot-starter-test') 
 }

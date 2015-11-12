@@ -1,7 +1,8 @@
 package com.example.db;
 
-import com.example.core.Rate;
+import com.example.domain.Rate;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import javax.validation.constraints.NotNull;
 
@@ -10,6 +11,6 @@ import javax.validation.constraints.NotNull;
  */
 public interface RateDAO {
     void update(@NotNull Rate rate);
-    Optional<Rate> get(@NotNull String code, @NotNull String date);
-    Boolean containsDate(@NotNull String date);
+    Optional<Rate> get(@NotNull String code, @NotNull LocalDate date);
+    Boolean containsDate(@NotNull LocalDate date);
 }

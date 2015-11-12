@@ -1,8 +1,7 @@
-package com.example.controllers;
+package com.example.controller;
 
-import com.example.exceptions.FormattedError;
-import com.example.exceptions.FormattedErrorResponse;
-import com.example.exceptions.FormattedErrorResponseProvider;
+import com.example.exception.FormattedErrorResponse;
+import com.example.exception.FormattedErrorResponseProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
