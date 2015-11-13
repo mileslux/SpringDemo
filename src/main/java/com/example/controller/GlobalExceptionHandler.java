@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Created by mileslux on 11/12/2015.
  */
 @ControllerAdvice
-public class ExceptionController {
+public class GlobalExceptionHandler {
     @Autowired
     private FormattedErrorResponseProvider formattedErrorResponseProvider;
 

@@ -6,6 +6,8 @@ import com.example.soap.SOAPClient;
 import com.example.soap.SOAPMessageParser;
 import com.example.soap.SOAPMessageProvider;
 import com.example.soap.response.GetCursOnDateXMLData;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.NotNull;
@@ -30,8 +32,8 @@ public class RateServiceImpl implements RateService {
     private SOAPMessageProvider soapMessageProvider;
 
     private final Object lockObject = new Object();
+    private final Multiset<LocalDate> beingRequested = HashMultiset.create();
 
-    @Override
     public Optional<Rate> get(@NotNull String code, @NotNull LocalDate date) throws Exception {
         Optional<Rate> result;
 
@@ -41,7 +43,7 @@ public class RateServiceImpl implements RateService {
                 return result;
         }
 
-        SOAPMessage response = null;
+        SOAPMessage response;
 
         try {
             response = soapClient.send(

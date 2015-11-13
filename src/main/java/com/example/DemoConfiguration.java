@@ -5,15 +5,24 @@ import com.example.db.RateDAO;
 import com.example.db.RateDAOImpl;
 import com.example.exception.FormattedErrorResponseProvider;
 import com.example.exception.FormattedErrorResponseProviderImpl;
+import com.example.mixin.JsonResponseMessageConverter;
+import com.example.mixin.JsonResponseSupportFactoryBean;
 import com.example.service.RateService;
 import com.example.service.RateServiceImpl;
 import com.example.soap.*;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+import java.util.List;
+
 
 /**
  * Created by mileslux on 11/8/2015.
@@ -21,7 +30,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 @Configuration
 @EnableWebMvc
 @Profile("production")
-public class DemoConfiguration {
+public class DemoConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     public RateDAO rateDAO() {
@@ -62,4 +71,15 @@ public class DemoConfiguration {
     public RequestMappingHandlerMapping requestMappingHandlerMapping() {
         return new ApiVersionRequestHandlerMapping();
     }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new JsonResponseMessageConverter());
+    }
+
+    @Bean
+    public InitializingBean initializingBean() {
+        return new JsonResponseSupportFactoryBean();
+    }
+
 }

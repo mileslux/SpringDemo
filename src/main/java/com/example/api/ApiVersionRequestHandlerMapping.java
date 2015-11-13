@@ -21,13 +21,11 @@ public class ApiVersionRequestHandlerMapping extends RequestMappingHandlerMappin
         ApiVersion methodAnnotation = AnnotationUtils.findAnnotation(method, ApiVersion.class);
         if(methodAnnotation != null) {
             RequestCondition<?> methodCondition = getCustomMethodCondition(method);
-            // Concatenate our ApiVersion with the usual request mapping
             info = createApiVersionInfo(methodAnnotation, methodCondition).combine(info);
         } else {
             ApiVersion typeAnnotation = AnnotationUtils.findAnnotation(handlerType, ApiVersion.class);
             if(typeAnnotation != null) {
                 RequestCondition<?> typeCondition = getCustomTypeCondition(handlerType);
-                // Concatenate our ApiVersion with the usual request mapping
                 info = createApiVersionInfo(typeAnnotation, typeCondition).combine(info);
             }
         }
@@ -58,15 +56,5 @@ public class ApiVersionRequestHandlerMapping extends RequestMappingHandlerMappin
                 new ConsumesRequestCondition(),
                 new ProducesRequestCondition(),
                 customCondition);
-    }
-
-    @Override
-    protected boolean isHandler(Class<?> beanType) {
-        Method[] methods = ReflectionUtils.getAllDeclaredMethods(beanType);
-        for (Method method : methods) {
-            if (AnnotationUtils.findAnnotation(method, ApiVersion.class) != null)
-                return true;
-        }
-        return false;
     }
 }

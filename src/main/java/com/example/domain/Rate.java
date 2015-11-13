@@ -1,8 +1,10 @@
 package com.example.domain;
 
-import com.example.utils.BigDecimalQuotedJsonSerializer;
+import com.example.utils.RateSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -15,10 +17,8 @@ public class Rate {
     @NotNull
     private String code;
     @NotNull
-    @JsonSerialize(using = BigDecimalQuotedJsonSerializer.class)
     private BigDecimal rate;
     @NotNull
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private LocalDate date;
 
     public String getCode() {
