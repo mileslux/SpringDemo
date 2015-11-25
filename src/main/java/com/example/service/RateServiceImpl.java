@@ -3,17 +3,21 @@ package com.example.service;
 import com.example.db.RateDAO;
 import com.example.domain.Rate;
 import com.example.soap.SOAPClient;
-import com.example.soap.SOAPMessageParser;
-import com.example.soap.SOAPMessageProvider;
-import com.example.soap.response.GetCursOnDateXMLData;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
+import com.example.soap.sberbank.SOAPMessageParser;
+import com.example.soap.sberbank.SOAPMessageProvider;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.NotNull;
 import javax.xml.soap.SOAPMessage;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Created by mileslux on 11/12/2015.
@@ -31,42 +35,36 @@ public class RateServiceImpl implements RateService {
     @Autowired
     private SOAPMessageProvider soapMessageProvider;
 
-    private final Object lockObject = new Object();
-    private final Multiset<LocalDate> beingRequested = HashMultiset.create();
+    private final LoadingCache<LocalDate, Map<String, Rate>> loadingCache = CacheBuilder.newBuilder()
+            .build(
+            new CacheLoader<LocalDate, Map<String, Rate>>() {
+                public Map<String, Rate> load(LocalDate date) throws Exception {
+                    SOAPMessage response = soapClient.send(
+                            soapMessageProvider.createGetCursOnDateXML(date)
+                    );
+
+                    response.writeTo(System.out);
+
+                    return ImmutableMap.<String, Rate>builder()
+                            .putAll(
+                                    soapMessageParser.parseGetCursOnDateXMLResponse(response)
+                                            .getGetCursOnDateXMLResult()
+                                            .getValuteData()
+                                            .getValuteCursOnDate()
+                                            .stream()
+                                            .map(v -> {
+                                                Rate rate = new Rate();
+                                                rate.setCode(v.getVchCode());
+                                                rate.setDate(date);
+                                                rate.setRate(v.getVcurs());
+                                                return rate;
+                                            }).collect(Collectors.toMap(Rate::getCode, Function.identity()))
+                            ).build();
+                }
+            });
 
     public Optional<Rate> get(@NotNull String code, @NotNull LocalDate date) throws Exception {
-        Optional<Rate> result;
-
-        synchronized (lockObject) {
-            result = rateDAO.get(code, date);
-            if (result.isPresent())
-                return result;
-        }
-
-        SOAPMessage response;
-
-        try {
-            response = soapClient.send(
-                    soapMessageProvider.createGetCursOnDateXML(date)
-            );
-
-            synchronized (lockObject) {
-                for (GetCursOnDateXMLData.ValuteCursOnDate valute : soapMessageParser.parseGetCursOnDateXML(response)) {
-                    Rate rate = new Rate();
-                    rate.setCode(valute.getVchCode());
-                    rate.setDate(date);
-                    rate.setRate(valute.getVcurs());
-                    rateDAO.update(rate);
-                }
-
-                result = rateDAO.get(code, date);
-            }
-
-        } catch (Exception ex) {
-            //log
-            throw ex;
-        }
-
-        return result;
+        Map<String, Rate> rates = loadingCache.get(date);
+        return Optional.ofNullable(rates.get(code));
     }
 }

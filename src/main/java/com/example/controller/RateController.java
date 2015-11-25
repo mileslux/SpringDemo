@@ -40,7 +40,7 @@ public class RateController {
     @JsonResponse(mixins = {
             @JsonMixin(target = Rate.class, mixin = RateMixin.class)
     })
-    public ResponseEntity<?> getRate(@PathVariable("code") String code) {
+    public ResponseEntity<?> getRate(@CodeConstraint @PathVariable("code") String code) {
         return getRate(code, LocalDate.now());
     }
 

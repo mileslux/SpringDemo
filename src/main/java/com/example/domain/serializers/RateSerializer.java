@@ -1,4 +1,4 @@
-package com.example.utils;
+package com.example.domain.serializers;
 
 import com.example.domain.Rate;
 import com.fasterxml.jackson.core.JsonGenerator;

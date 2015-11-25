@@ -8,9 +8,10 @@ import java.lang.annotation.Target;
 /**
  * Created by mileslux on 11/11/2015.
  */
-@Target(ElementType.METHOD)
+@Target(value = {ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiVersion {
     String[] versions() default {};
+
     boolean latest() default false;
 }

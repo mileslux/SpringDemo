@@ -1,4 +1,4 @@
-package com.example.soap;
+package com.example.soap.sberbank;
 
 import javax.xml.soap.*;
 import java.time.LocalDate;
